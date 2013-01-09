@@ -1,0 +1,107 @@
+#!/system/bin/sh
+
+calsourcefile=/efs/cal/camera/camera.cal
+caltargetfile=/data/misc/camera/R01_MVEN002_LD0_ND0_IR0_SH0_FL0_SVEN002_DCCID46/camera.cal
+dccsourcefolder=/system/vendor/camera/R01_MVEN002_LD0_ND0_IR0_SH0_FL0_SVEN002_DCCID46
+dcctargetfolder=/data/misc/camera/R01_MVEN002_LD0_ND0_IR0_SH0_FL0_SVEN002_DCCID46
+dcccheckfile=/data/misc/camera/R01_MVEN002_LD0_ND0_IR0_SH0_FL0_SVEN002_DCCID46/cid44_OV9726_alg_3a_ae_dcc.bin
+statusfile=/efs/cal/camera/camera_status
+
+if [ -e $caltargetfile ] && [ -e $dcccheckfile ]
+then 
+exit 0
+fi
+
+if [ ! -e $dcctargetfolder ]
+then
+mkdir -p $dcctargetfolder
+fi
+
+if [ ! -e $caltargetfile ]
+then 
+if [ -e $calsourcefile ] 
+then
+ln -s $calsourcefile $caltargetfile
+fi
+fi
+
+if [ ! -e $dcccheckfile ]
+then
+ln -s $dccsourcefolder/cid44_OV9726_alg_3a_ae_dcc.bin $dcctargetfolder/cid44_OV9726_alg_3a_ae_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_ipipe_cfai_dcc.bin $dcctargetfolder/cid44_OV9726_ipipe_cfai_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_alg_3a_ae_mms2_dcc.bin $dcctargetfolder/cid44_OV9726_alg_3a_ae_mms2_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_ipipe_cgs_dcc.bin $dcctargetfolder/cid44_OV9726_ipipe_cgs_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_alg_3a_ae_ti2_dcc.bin $dcctargetfolder/cid44_OV9726_alg_3a_ae_ti2_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_ipipe_dpc_lut_dcc.bin $dcctargetfolder/cid44_OV9726_ipipe_dpc_lut_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_alg_3a_af_affw_dcc.bin $dcctargetfolder/cid44_OV9726_alg_3a_af_affw_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_ipipe_dpc_otf.bin $dcctargetfolder/cid44_OV9726_ipipe_dpc_otf.bin
+ln -s $dccsourcefolder/cid44_OV9726_alg_3a_af_affw_dcc_tuning.bin $dcctargetfolder/cid44_OV9726_alg_3a_af_affw_dcc_tuning.bin
+ln -s $dccsourcefolder/cid44_OV9726_ipipe_ee_dcc.bin $dcctargetfolder/cid44_OV9726_ipipe_ee_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_alg_3a_af_caf_dcc.bin $dcctargetfolder/cid44_OV9726_alg_3a_af_caf_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_ipipe_gbce_dcc.bin $dcctargetfolder/cid44_OV9726_ipipe_gbce_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_alg_3a_af_caf_dcc_tuning.bin $dcctargetfolder/cid44_OV9726_alg_3a_af_caf_dcc_tuning.bin
+ln -s $dccsourcefolder/cid44_OV9726_ipipe_gic_dcc.bin $dcctargetfolder/cid44_OV9726_ipipe_gic_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_alg_3a_af_hllc_dcc.bin $dcctargetfolder/cid44_OV9726_alg_3a_af_hllc_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_ipipe_lsc_poly_dcc.bin $dcctargetfolder/cid44_OV9726_ipipe_lsc_poly_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_alg_3a_af_hllc_dcc_tuning.bin $dcctargetfolder/cid44_OV9726_alg_3a_af_hllc_dcc_tuning.bin
+ln -s $dccsourcefolder/cid44_OV9726_ipipe_nf1_dcc.bin $dcctargetfolder/cid44_OV9726_ipipe_nf1_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_alg_3a_af_saf_dcc.bin $dcctargetfolder/cid44_OV9726_alg_3a_af_saf_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_ipipe_nf2_dcc.bin $dcctargetfolder/cid44_OV9726_ipipe_nf2_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_alg_3a_af_saf_dcc_tuning.bin $dcctargetfolder/cid44_OV9726_alg_3a_af_saf_dcc_tuning.bin
+ln -s $dccsourcefolder/cid44_OV9726_ipipe_rgb2rgb_1_dcc.bin $dcctargetfolder/cid44_OV9726_ipipe_rgb2rgb_1_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_alg_adjust_rgb2rgb_dcc.bin $dcctargetfolder/cid44_OV9726_alg_adjust_rgb2rgb_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_ipipe_rgb2rgb_2_dcc.bin $dcctargetfolder/cid44_OV9726_ipipe_rgb2rgb_2_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_awb_alg_ti3_gains_adjust.bin $dcctargetfolder/cid44_OV9726_awb_alg_ti3_gains_adjust.bin
+ln -s $dccsourcefolder/cid44_OV9726_ipipe_rgb2yuv_dcc.bin $dcctargetfolder/cid44_OV9726_ipipe_rgb2yuv_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_awb_alg_ti3_tuning.bin $dcctargetfolder/cid44_OV9726_awb_alg_ti3_tuning.bin
+ln -s $dccsourcefolder/cid44_OV9726_ipipe_rsz_dcc.bin $dcctargetfolder/cid44_OV9726_ipipe_rsz_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_capabilities.bin $dcctargetfolder/cid44_OV9726_capabilities.bin
+ln -s $dccsourcefolder/cid44_OV9726_ipipe_yuv444_to_yuv422_dcc.bin $dcctargetfolder/cid44_OV9726_ipipe_yuv444_to_yuv422_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_ducati_awb_ti2_tun.bin $dcctargetfolder/cid44_OV9726_ducati_awb_ti2_tun.bin
+ln -s $dccsourcefolder/cid44_OV9726_isif_clamp_dcc.bin $dcctargetfolder/cid44_OV9726_isif_clamp_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_ducati_eff_tun.bin $dcctargetfolder/cid44_OV9726_ducati_eff_tun.bin
+ln -s $dccsourcefolder/cid44_OV9726_isif_csc_dcc.bin $dcctargetfolder/cid44_OV9726_isif_csc_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_ducati_gamma.bin $dcctargetfolder/cid44_OV9726_ducati_gamma.bin
+ln -s $dccsourcefolder/cid44_OV9726_iss_glbce3_dcc.bin $dcctargetfolder/cid44_OV9726_iss_glbce3_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_ducati_lsc_2d.bin $dcctargetfolder/cid44_OV9726_ducati_lsc_2d.bin
+ln -s $dccsourcefolder/cid44_OV9726_iss_lbce_dcc.bin $dcctargetfolder/cid44_OV9726_iss_lbce_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_ducati_nsf_ldc.bin $dcctargetfolder/cid44_OV9726_ducati_nsf_ldc.bin
+ln -s $dccsourcefolder/cid44_OV9726_iss_scene_modes_dcc.bin $dcctargetfolder/cid44_OV9726_iss_scene_modes_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_face_detect_dcc.bin $dcctargetfolder/cid44_OV9726_face_detect_dcc.bin
+ln -s $dccsourcefolder/cid44_ov9726_iss_vstab_dcc.bin $dcctargetfolder/cid44_ov9726_iss_vstab_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_face_tracking_dcc.bin $dcctargetfolder/cid44_OV9726_face_tracking_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_ldc_cac_cfg_dcc.bin $dcctargetfolder/cid44_OV9726_ldc_cac_cfg_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_gbce_sw1_dcc.bin $dcctargetfolder/cid44_OV9726_gbce_sw1_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_ldc_cfg_dcc.bin $dcctargetfolder/cid44_OV9726_ldc_cfg_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_h3a_aewb_dcc.bin $dcctargetfolder/cid44_OV9726_h3a_aewb_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_lsc_interp.bin $dcctargetfolder/cid44_OV9726_lsc_interp.bin
+ln -s $dccsourcefolder/cid44_OV9726_ipipe_3d_lut_dcc.bin $dcctargetfolder/cid44_OV9726_ipipe_3d_lut_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_vnf_cfg_dcc.bin $dcctargetfolder/cid44_OV9726_vnf_cfg_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_ipipe_car_dcc.bin $dcctargetfolder/cid44_OV9726_ipipe_car_dcc.bin
+ln -s $dccsourcefolder/cid44_OV9726_current_module_calibration.bin $dcctargetfolder/cid44_OV9726_current_module_calibration.bin
+ln -s $dccsourcefolder/cid44_OV9726_golden_module_calibration.bin $dcctargetfolder/cid44_OV9726_golden_module_calibration.bin
+ln -s $dccsourcefolder/cid65535_kgen_dcc_preflash.bin $dcctargetfolder/cid65535_kgen_dcc_preflash.bin
+fi
+
+if [ -e $caltargetfile ]
+then 
+camcalstatus="PASS"
+else
+camcalstatus="FAILED"
+fi
+
+if [ -e $dcccheckfile ]
+then
+camdccstatus="PASS"
+else
+camdccstatus="FAILED"
+fi
+
+if [ -e $statusfile ]
+then 
+rm $statusfile
+fi 
+
+echo "CAMERACAL:$camcalstatus"  >> $statusfile 
+echo "CAMERADCC:$camdccstatus" >> $statusfile 
+

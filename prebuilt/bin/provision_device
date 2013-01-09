@@ -1,0 +1,236 @@
+#!/system/bin/sh
+
+logfile=/efs/provisioning_log
+statusfile=/efs/provisioning_status
+
+PROVISION_FAILED_PPM=/system/vendor/data/images/provisioning_failed.ppm
+FB_PATH=/dev/graphics/fb0
+FAIL_FLAG=/efs/failed_provisioning
+ALWAYS_BLOCK=0
+
+block_Screen(){
+
+	# Give a chance to let other process related to DSS and FB satble
+	/system/bin/sleep 5
+
+	while [ true ]
+	do
+		/system/bin/touch $FAIL_FLAG
+		/system/bin/stop
+		/system/bin/cat $PROVISION_FAILED_PPM > $FB_PATH
+		/system/bin/sleep 5
+	done
+}
+
+# block screen if ALWAYS_BLOCK enabled
+if [ $ALWAYS_BLOCK -eq 1 ]
+then
+    if [ -e $FAIL_FLAG ]
+    then
+        block_Screen
+    fi
+fi
+
+if [ -e /vendor/etc/provisioning/provisioning_forced ]  || [ -e /efs/provisioning/provisioning_forced ]
+then 
+    /system/bin/rm /efs/provisioning_complete*
+fi
+
+if [ -e /efs/provisioning_complete ] || [ -e /efs/provisioning_complete_20120512 ] || [ -e /efs/provisioning_complete_20120730 ] || [ -e /efs/provisioning_complete_20120731 ] 
+then 
+echo device already provisioned
+exit 0
+fi
+
+/system/bin/sleep 2
+ 
+device=`cat /proc/product_name`
+
+if [ "$device" = "Tate PreEVT2.1" ]
+then
+platform=tate
+playready_type=test
+playready_wrap=dummy
+keys=dummy
+else
+platform=tate
+playready_type=production
+playready_wrap=production
+fi
+
+if [ -e "/efs/provisioning/"$playready_type"_wrapped_in_"$playready_wrap ]
+then
+    playready="/efs/provisioning/"$playready_type"_wrapped_in_"$playready_wrap
+else
+    playready="/vendor/etc/provisioning/"$playready_type"_wrapped_in_"$playready_wrap
+fi
+
+hdcp="/efs/provisioning/hdcp"
+
+
+if [ ! -e $hdcp ] && [ ! -e $playready ] && [ "$device" != "Tate PreEVT2.1" ]
+then
+echo "Provisioning aborted.  No provisioning directories"
+block_Screen
+fi
+
+echo PROVISIONING STARTED > $logfile
+
+echo platform=$platform >> $logfile
+echo playready=$playready >> $logfile
+
+/system/bin/mkdir -p /efs/smc
+/system/bin/mkdir -p /efs/hdcp 
+
+pekfile=`ls $playready/*pek_wrapped_TL*`
+
+if [ -e $pekfile ]
+then 
+
+/system/bin/rm -R /efs/smc/*
+
+provisioning_client wipeAll 2>&1 >> $logfile
+wipeALL=$?
+echo wipeALL returned $wipeALL >> $logfile
+
+provisioning_client setPEK $pekfile 2>&1 >> $logfile
+setPEK=$?
+echo setPEK returned $setPEK >> $logfile
+fi
+
+modelcertfile=`ls $playready/*playready_model_certificate*`
+if [ -e $modelcertfile ]
+then
+provisioning_client setModelCert $modelcertfile 2>&1 >> $logfile
+setModelCert=$?
+echo setModelCert returned $setModelCert >> $logfile
+fi
+
+modelkeyfile=`ls $playready/*playready_model_key*`
+if [ -e $modelkeyfile ]
+then
+provisioning_client setModelKey $modelkeyfile 2>&1 >> $logfile
+setModelKey=$?
+echo setModelKey=$setModelKey >> $logfile
+fi
+
+oplfile=`ls $playready/*playready_opl*`
+if [ -e $oplfile ]
+then
+provisioning_client setOPLFromFile $oplfile 2>&1 >> $logfile
+setOPLFromFile=$?
+echo setOPLFromFile returned $setOPLFromFile >> $logfile
+fi
+
+wmdrmmodelcertfile=`ls $playready/*wmdrm_model_certificate*`
+if [ -e $wmdrmmodelcertfile ]
+then
+provisioning_client setWModelCert $wmdrmmodelcertfile 2>&1 >> $logfile
+setWModelCert=$?
+echo setWModelCert returned $setWModelCert >> $logfile
+fi
+
+wmdrmmodelkeyfile=`ls $playready/*wmdrm_model_key*`
+if [ -e $wmdrmmodelkeyfile ]
+then
+provisioning_client setWModelKey $wmdrmmodelkeyfile 2>&1 >> $logfile
+setWModelKey=$?
+echo setWModelKey returned $setWModelKey >> $logfile
+echo
+fi
+
+if [[ "$setModelKey" == "0" && "$setOPLFromFile" == "0" && "$setWModelCert" == "0" && "$setWModelKey" == "0" ]]
+then
+provisioning_client initialize 2>&1 >> $logfile
+initialize=$? 
+echo initialize returned $initialize >> $logfile
+else
+initialize=1
+echo not initialized due to failure of provisioning >> $logfile
+fi
+
+if [ $initialize == 0 ]
+then
+    playreadystatus="Pass"
+else
+    playreadystatus="Fail"
+    provisioning_client wipeAll 2>&1 >> $logfile
+    echo provisioning failed and wipe all the files >> $logfile
+fi
+
+pek=`ls $playready/*pek_wrapped_TI.bin`
+hdcpkey=`ls $hdcp/batch*key*.bin`
+
+if [ ! -e $pek ]
+then
+	echo "error: pek_wrapped_TI.bin file does not exists!" >> $logfile
+fi
+
+if [ ! -e $hdcpkey ]
+then
+	echo "error: batch*key*.bin file does not exists!" >> $logfile
+fi
+
+hdcpprov=1
+
+/system/bin/mkdir -p /efs/hdcp
+
+if [ -e /efs/hdcp/hdcp.kek.wrapped ] && [ -e /efs/hdcp/pek.kek.wrapped ]
+then
+    hdcpprov=0
+    hdcpkey="PROVISIONED"
+else
+    if [ -e $pek ] && [ -e $hdcpkey ] && [ ! -e /efs/hdcp/hdcp.kek.wrapped ] && [ ! -e /efs/hdcp/pek.kek.wrapped ]
+    then
+        hdcpprov=1
+        retryloop=3
+
+        while [ $hdcpprov -ne 0 ] && [ $retryloop -gt 0 ]
+        do
+            /system/bin/hdcp-prov $pek $hdcpkey /efs/hdcp/hdcp.kek.wrapped /efs/hdcp/pek.kek.wrapped 2>&1 >> $logfile
+            hdcpprov=$?
+	        echo hdcp-prov returned $hdcpprov >> $logfile
+            retryloop=$((retryloop -1))
+        done
+    else
+    	echo error: Unable to call hdcp-prov due to missing input files >> $logfile
+    fi
+fi
+
+if [ $hdcpprov == 0 ]
+then
+    hdcpstatus="Pass"
+else
+    hdcpstatus="Fail"
+fi
+
+if [ ! -e /efs/hdcp/hdcp.kek.wrapped ] || [ ! -e /efs/hdcp/pek.kek.wrapped ]
+then
+    hdcpstatus="Fail"
+fi
+
+echo "Provisioning Status:" > $statusfile
+echo "PlayReady:$playreadystatus" >> $statusfile
+echo "HDCP:$hdcpstatus"  >> $statusfile 
+echo "hdcpkey:$hdcpkey" >> $statusfile 
+
+if [ "$device" != "Tate PreEVT2.1" ]
+then
+    if [ "$hdcpstatus" != "Pass" ] || \
+       [ "$playreadystatus" != "Pass" ]
+    then
+	block_Screen
+    fi
+fi
+
+/system/bin/rm -R /efs/provisioning 2>&1 > /dev/null
+/system/bin/rm /efs/provisioning_complete* /efs/provisioning_sense* /efs/failed_provisioning 2>&1 > /dev/null 
+
+/system/bin/touch /efs/provisioning_complete_20120512
+/system/bin/touch /efs/provisioning_complete_20120730
+/system/bin/touch /efs/provisioning_complete_20120731
+
+/system/bin/touch /efs/provisioning_complete
+
+/system/bin/sync
+
