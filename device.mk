@@ -16,6 +16,7 @@
 
 DEVICE_FOLDER := device/amazon/bowser
 COMMON_FOLDER := device/amazon/omap4-common
+TARGET_BOOTLOADER_BOARD_SUBTYPE := tate
 
 $(call inherit-product, $(COMMON_FOLDER)/common.mk)
 
@@ -31,11 +32,6 @@ PRODUCT_PACKAGES += \
     camera.bowser \
     audio.primary.bowser \
     audio.hdmi.bowser \
-
-# Wifi
-PRODUCT_PACKAGES += \
-    lib_driver_cmd_bcmdhd \
-    libnetcmdiface
 
 # BT
 PRODUCT_PACKAGES += \
@@ -58,9 +54,6 @@ PRODUCT_COPY_FILES += \
 # Remove ducati for now until I fix ducati load crash
 # Prebuilt firmware
 PRODUCT_COPY_FILES += \
-    $(COMMON_FOLDER)/wifi/firmware/firmware-tate.bin:system/vendor/firmware/fw_bcmdhd.bin \
-    $(COMMON_FOLDER)/wifi/firmware/firmware-tate.bin:system/vendor/firmware/fw_bcmdhd_apsta.bin \
-    $(COMMON_FOLDER)/wifi/firmware/firmware-tate.bin:system/vendor/firmware/fw_bcmdhd_p2p.bin \
     $(DEVICE_FOLDER)/firmware/maxtouch.cfg:/system/vendor/firmware/maxtouch.cfg \
     $(DEVICE_FOLDER)/firmware/maxtouch.fw:/system/vendor/firmware/maxtouch.fw \
     $(DEVICE_FOLDER)/firmware/mxt-fw20.enc:/system/vendor/firmware/mxt-fw20.enc \
@@ -76,10 +69,6 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/prebuilt/etc/media_codecs.xml:/system/etc/media_codecs.xml \
     $(DEVICE_FOLDER)/prebuilt/etc/media_profiles.xml:/system/etc/media_profiles.xml \
     $(DEVICE_FOLDER)/prebuilt/etc/vold.fstab:system/etc/vold.fstab \
-    $(COMMON_FOLDER)/wifi/firmware/nvram_tate_usi.txt:system/etc/wifi/nvram_tate_usi.txt \
-    $(COMMON_FOLDER)/wifi/firmware/nvram_tate_semco.txt:system/etc/wifi/nvram_tate_semco.txt \
-    $(COMMON_FOLDER)/wifi/firmware/nvram.txt:system/etc/wifi/bcmdhd.cal \
-    $(COMMON_FOLDER)/prebuilt/etc/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
 
 # Prebuilt /system/usr
 PRODUCT_COPY_FILES += \
@@ -101,7 +90,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/recovery/postrecoveryboot.sh:recovery/root/sbin/postrecoveryboot.sh
 
-PRODUCT_PROPERTY_OVERRIDES := \
+PRODUCT_PROPERTY_OVERRIDES += \
     ro.sf.lcd_density=210 \
     persist.hwc.mirroring.region=0:0:800:1280 \
     persist.hwc.mirroring.transform=0 \
@@ -113,3 +102,4 @@ PRODUCT_PROPERTY_OVERRIDES := \
 $(call inherit-product, frameworks/native/build/tablet-dalvik-heap.mk)
 $(call inherit-product-if-exists, $(DEVICE_FOLDER)/prebuilt/camera/vendor-camera.mk)
 $(call inherit-product-if-exists, $(COMMON_FOLDER)/imgtec/sgx-imgtec-bins-540.mk)
+$(call inherit-product-if-exists, $(COMMON_FOLDER)/bcmdhd-wifi/bcmdhd-wifi.mk)
