@@ -1,5 +1,4 @@
 LOCAL_PATH:= $(call my-dir)
-COMMON_FOLDER := device/motorola/common
 
 #
 # libOMX.TI.DUCATI1.VIDEO.DECODER
