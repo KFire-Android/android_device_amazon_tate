@@ -99,7 +99,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.nf.profile=2 \
     ro.nf.level=512 \
 
-$(call inherit-product, frameworks/native/build/tablet-dalvik-heap.mk)
+$(call inherit-product, frameworks/native/build/tablet-7in-hdpi-1024-dalvik-heap.mk)
 $(call inherit-product-if-exists, $(DEVICE_FOLDER)/prebuilt/camera/vendor-camera.mk)
 $(call inherit-product-if-exists, $(COMMON_FOLDER)/imgtec/sgx-imgtec-bins-540.mk)
 $(call inherit-product-if-exists, $(COMMON_FOLDER)/bcmdhd-wifi/bcmdhd-wifi.mk)
