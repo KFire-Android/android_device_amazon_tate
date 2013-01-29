@@ -1,7 +1,10 @@
-DEVICE_FOLDER := device/amazon/bowser
+DEVICE_FOLDER := device/amazon/tate
 TARGET_BOOTLOADER_BOARD_SUBTYPE := tate
 
 $(call inherit-product, device/amazon/bowser-common/common.mk)
+
+# Device overlay
+DEVICE_PACKAGE_OVERLAYS += $(DEVICE_FOLDER)/overlay
 
 PRODUCT_AAPT_CONFIG := large hdpi xhdpi
 
