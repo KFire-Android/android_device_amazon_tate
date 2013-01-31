@@ -10,7 +10,7 @@ PRODUCT_AAPT_CONFIG := large hdpi xhdpi
 
 # Rootfs
 PRODUCT_COPY_FILES += \
-    $(DEVICE_FOLDER)/root/init.bowser.rc:root/init.bowser.rc
+    $(DEVICE_FOLDER)/init.bowser.rc:root/init.bowser.rc
 
 # Prebuilts /system/bin
 PRODUCT_COPY_FILES += \
@@ -48,6 +48,11 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/prebuilt/lib/libmlplatform.so:system/lib/libmlplatform.so \
     $(DEVICE_FOLDER)/prebuilt/lib/libmplmpu.so:system/lib/libmplmpu.so \
     $(DEVICE_FOLDER)/prebuilt/lib/libril-lab126qmi.so:/system/lib/libril-lab126qmi.so \
+
+# Recovery
+PRODUCT_COPY_FILES += \
+    $(DEVICE_FOLDER)/atmel_mxt_ts.ko:$(TARGET_RECOVERY_OUT)/sbin/atmel_mxt_ts.ko \
+
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.sf.lcd_density=210 \

@@ -7,8 +7,10 @@ DEVICE_FOLDER := device/amazon/tate
 -include vendor/amazon/tate/BoardConfigVendor.mk
 
 # Kernel Build
-TARGET_KERNEL_SOURCE := kernel/amazon/bowser-common
-TARGET_KERNEL_CONFIG := tate_android_defconfig
+BOARD_KERNEL_CMDLINE := ttyO2,115200n8 rootdelay=2 mem=1G init=/init vmalloc=256M vram=32M omapfb.vram=0:20M androidboot.console=ttyO2 androidboot.hardware=bowser
+#TARGET_KERNEL_SOURCE := kernel/amazon/bowser-common
+#TARGET_KERNEL_CONFIG := tate_android_defconfig
+TARGET_PREBUILT_KERNEL := $(DEVICE_FOLDER)/kernel
 
 # OTA Packaging / Bootimg creation
 BOARD_CUSTOM_BOOTIMG_MK := $(DEVICE_FOLDER)/boot.mk
@@ -20,6 +22,5 @@ TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := ./$(DEVICE_FOLDER)/releasetools/bow
 
 # TWRP Config
 TARGET_OTA_ASSERT_DEVICE := blaze_tablet,bowser,tate
-DEVICE_RESOLUTION := 1280x800
-RECOVERY_TOUCHSCREEN_SWAP_XY := true
-RECOVERY_TOUCHSCREEN_FLIP_Y := true
+DEVICE_RESOLUTION := 800x1280
+
