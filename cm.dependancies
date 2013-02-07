@@ -1,0 +1,16 @@
+[
+  {
+    "repository": "android_device_amazon_bowser-common",
+    "target_path": "device/amazon/bowser-common"
+  },
+  {
+    "repository": "android_device_amazon_omap4-common",
+    "target_path": "device/amazon/omap4-common"
+  },
+  {
+    "repository": "android_kernel_amazon_bowser-common",
+    "target_path": "kernel/amazon/bowser-common"
+  }
+]
+
+
