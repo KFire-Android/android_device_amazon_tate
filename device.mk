@@ -25,11 +25,7 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/prebuilt/usr/keylayout/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl\
     $(DEVICE_FOLDER)/prebuilt/usr/keylayout/twl6030_pwrbutton.kl:system/usr/keylayout/twl6030_pwrbutton.kl
 
-# Recovery
-PRODUCT_COPY_FILES += \
-    $(DEVICE_FOLDER)/atmel_mxt_ts.ko:$(TARGET_RECOVERY_OUT)/sbin/atmel_mxt_ts.ko \
-
-
+# Device settings
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.sf.lcd_density=210 \
     persist.hwc.mirroring.region=0:0:800:1280 \
@@ -37,8 +33,15 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.lab126.touchnoisereject=1 \
     persist.lab126.chargeprotect=1 \
     ro.nf.profile=2 \
-    ro.nf.level=512 \
+    ro.nf.level=512
 
-$(call inherit-product-if-exists, vendor/invensense/tate/device-partial.mk)
-$(call inherit-product-if-exists, vendor/imgtec/amazon-common/device-partial-540.mk)
+# Dalvik
+PRODUCT_PROPERTY_OVERRIDES += \
+    dalvik.vm.heapstartsize=8m \
+    dalvik.vm.heapgrowthlimit=64m \
+    dalvik.vm.heapsize=256m \
+    dalvik.vm.heaptargetutilization=0.75 \
+    dalvik.vm.heapminfree=512k \
+    dalvik.vm.heapmaxfree=8m
+
 $(call inherit-product-if-exists, vendor/amazon/tate/tate-vendor.mk)

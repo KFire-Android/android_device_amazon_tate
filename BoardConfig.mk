@@ -8,10 +8,8 @@ TARGET_BOARD_OMAP_CPU := 4460
 -include vendor/amazon/tate/BoardConfigVendor.mk
 
 # Kernel Build
-BOARD_KERNEL_CMDLINE := ttyO2,115200n8 rootdelay=2 mem=1G init=/init vmalloc=256M vram=32M omapfb.vram=0:20M androidboot.console=ttyO2 androidboot.hardware=bowser
-#TARGET_KERNEL_SOURCE := kernel/amazon/bowser-common
-#TARGET_KERNEL_CONFIG := tate_android_defconfig
-TARGET_PREBUILT_KERNEL := $(DEVICE_FOLDER)/kernel
+TARGET_KERNEL_SOURCE := kernel/amazon/bowser-common
+TARGET_KERNEL_CONFIG := tate_android_defconfig
 
 # External SGX Module
 SGX_MODULES:
@@ -19,8 +17,14 @@ SGX_MODULES:
 	cp $(TARGET_KERNEL_SOURCE)/drivers/video/omap2/omapfb/omapfb.h $(KERNEL_OUT)/drivers/video/omap2/omapfb/omapfb.h
 	make -j8 -C $(COMMON_FOLDER)/pvr-source/eurasiacon/build/linux2/omap4430_android ARCH=arm KERNEL_CROSS_COMPILE=arm-eabi- CROSS_COMPILE=arm-eabi- KERNELDIR=$(KERNEL_OUT) TARGET_PRODUCT="blaze_tablet" BUILD=release TARGET_SGX=540 PLATFORM_VERSION=4.0
 	mv $(KERNEL_OUT)/../../target/kbuild/pvrsrvkm_sgx540_120.ko $(KERNEL_MODULES_OUT)
+	$(ARM_EABI_TOOLCHAIN)/arm-eabi-strip --strip-unneeded $(KERNEL_MODULES_OUT)/pvrsrvkm_sgx540_120.ko
 
-TARGET_KERNEL_MODULES += SGX_MODULES
+# Put the touchscreen driver into rootfs
+TS_MODULE:
+	make -j8 -C $(KERNEL_SRC) O=$(KERNEL_OUT) ARCH=arm KERNEL_CROSS_COMPILE=arm-eabi- CROSS_COMPILE=arm-eabi- KERNELDIR=$(KERNEL_OUT) modules
+	cp $(KERNEL_OUT)/drivers/input/touchscreen/atmel_mxt_ts.ko $(OUT)/root/sbin/
+
+TARGET_KERNEL_MODULES += SGX_MODULES TS_MODULE
 
 # OTA Packaging / Bootimg creation
 BOARD_CUSTOM_BOOTIMG_MK := $(DEVICE_FOLDER)/boot.mk

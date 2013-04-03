@@ -29,7 +29,6 @@ bin/start_smc.sh
 bin/atmel_touch.sh
 
 # HALs
-lib/hw/audio.primary.omap4.so
 lib/hw/sensors.omap4.so
 
 # Libs
