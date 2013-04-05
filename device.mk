@@ -14,10 +14,6 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/init.bowser.usb.rc:root/init.bowser.usb.rc \
     $(DEVICE_FOLDER)/ueventd.bowser.rc:root/ueventd.bowser.rc
 
-# Prebuilts /system/etc
-PRODUCT_COPY_FILES += \
-    $(DEVICE_FOLDER)/prebuilt/etc/tate.xml:/system/etc/sound/tate \
-
 # Prebuilt /system/usr
 PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/prebuilt/usr/idc/cyttsp4-i2c.idc:system/usr/idc/cyttsp4-i2c.idc \
