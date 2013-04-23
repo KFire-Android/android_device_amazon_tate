@@ -152,6 +152,10 @@ on post-fs
     chmod 0777 /proc/product_name
     chmod 0666 /dev/rfkill
 
+# change permissions for Backlight
+    chmod 0666 /sys/class/backlight/lcd-backlight/brightness
+    chown system graphics /sys/class/backlight/lcd-backlight/brightness
+
 # change permissions for HDMI certification support, to be removed on user build
     chmod 0777 /sys/devices/platform/omapdss/display1/hdmi_timings
     chmod 0777 /sys/devices/platform/omapdss/display1/deepcolor
