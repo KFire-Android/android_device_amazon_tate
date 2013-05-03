@@ -30,6 +30,9 @@ on post-fs-data
     mkdir /cache/trace 0777 system system
     chown system system /cache/trace
 
+# symlink egl.cfg
+    symlink /sys/egl/egl.cfg /system/lib/egl/egl.cfg
+
 # camera calibration - DCC folder permission
     chown media media /data/misc/camera
     chown media media /data/misc/camera/R12_MVEN001_LD1_ND0_IR0_SH0_FL0_SVEN001_DCCID43
