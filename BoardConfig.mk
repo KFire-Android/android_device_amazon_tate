@@ -37,4 +37,5 @@ TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := ./$(DEVICE_FOLDER)/releasetools/bow
 # TWRP Config
 TARGET_OTA_ASSERT_DEVICE := blaze_tablet,bowser,tate
 DEVICE_RESOLUTION := 800x1280
+TW_BRIGHTNESS_PATH := /sys/class/backlight/lcd-backlight/brightness
 
