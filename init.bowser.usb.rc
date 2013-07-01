@@ -1,8 +1,8 @@
 on boot
-    write /sys/class/android_usb/android0/f_rndis/manufacturer ${ro.product.manufacturer}
+    write /sys/class/android_usb/android0/f_rndis/manufacturer Amazon
     write /sys/class/android_usb/android0/f_rndis/vendorID ${sys.usb.vid}
     write /sys/class/android_usb/android0/f_rndis/wceis 1
-    write /sys/class/android_usb/android0/iManufacturer ${ro.product.manufacturer}
+    write /sys/class/android_usb/android0/iManufacturer Amazon
     write /sys/class/android_usb/android0/iProduct "Kindle"
     write /sys/class/android_usb/android0/iSerial ${ro.serialno}
     write /sys/class/android_usb/android0/idVendor ${sys.usb.vid}
