@@ -29,7 +29,14 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.lab126.touchnoisereject=1 \
     persist.lab126.chargeprotect=1 \
     ro.nf.profile=2 \
-    ro.nf.level=512
+    ro.nf.level=512 \
+    omap.audio.mic.main=DMic0L \
+    omap.audio.mic.sub=DMic0R \
+    omap.audio.power=PingPong \
+    dolby.audio.sink.info=speaker \
+    sys.usb.vid=1949 \
+    sys.usb.pid=0007
+
 
 # Dalvik
 PRODUCT_PROPERTY_OVERRIDES += \
