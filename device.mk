@@ -21,6 +21,10 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/prebuilt/usr/keylayout/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl\
     $(DEVICE_FOLDER)/prebuilt/usr/keylayout/twl6030_pwrbutton.kl:system/usr/keylayout/twl6030_pwrbutton.kl
 
+# Recovery TS module/config
+PRODUCT_COPY_FILES += \
+    $(DEVICE_FOLDER)/prebuilt/vendor/firmware/maxtouch.cfg:recovery/root/vendor/firmware/maxtouch.cfg
+
 # Device settings
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.sf.lcd_density=213 \
