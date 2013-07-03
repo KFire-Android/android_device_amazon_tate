@@ -39,4 +39,4 @@ TARGET_RECOVERY_INITRC := $(DEVICE_FOLDER)/init.recovery.rc
 TARGET_OTA_ASSERT_DEVICE := blaze_tablet,bowser,tate
 DEVICE_RESOLUTION := 800x1280
 TW_BRIGHTNESS_PATH := /sys/class/backlight/lcd-backlight/brightness
-
+TW_NO_SCREEN_BLANK := true
