@@ -21,10 +21,11 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/prebuilt/usr/keylayout/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl\
     $(DEVICE_FOLDER)/prebuilt/usr/keylayout/twl6030_pwrbutton.kl:system/usr/keylayout/twl6030_pwrbutton.kl
 
-# Recovery TS module/config
+# Recovery Trigger / TS module/config
 PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/prebuilt/vendor/firmware/atmel_mxt_ts.ko:recovery/root/vendor/firmware/atmel_mxt_ts.ko \
-    $(DEVICE_FOLDER)/prebuilt/vendor/firmware/maxtouch.cfg:recovery/root/vendor/firmware/maxtouch.cfg
+    $(DEVICE_FOLDER)/prebuilt/vendor/firmware/maxtouch.cfg:recovery/root/vendor/firmware/maxtouch.cfg \
+    $(DEVICE_FOLDER)/postrecoveryboot.sh:recovery/root/sbin/postrecoveryboot.sh
 
 # Device settings
 PRODUCT_PROPERTY_OVERRIDES += \
