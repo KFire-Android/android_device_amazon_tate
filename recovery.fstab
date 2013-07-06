@@ -1,13 +1,10 @@
 # mount point	fstype	device
 
-/sdcard	 	datamedia	/dev/null
-/data		ext4		/dev/block/platform/omap/omap_hsmmc.1/by-name/userdata
+#/sdcard	 	datamedia	/dev/null
+/data		ext4		/dev/block/platform/omap/omap_hsmmc.1/by-name/userdata	length=-16384
 /cache		ext4		/dev/block/platform/omap/omap_hsmmc.1/by-name/cache
 /system		ext4		/dev/block/platform/omap/omap_hsmmc.1/by-name/system
 /boot		emmc		/dev/block/platform/omap/omap_hsmmc.1/by-name/boot
 /recovery	emmc		/dev/block/platform/omap/omap_hsmmc.1/by-name/recovery
 /bootloader	emmc		/dev/block/platform/omap/omap_hsmmc.1/by-name/bootloader
-/misc 		emmc 		/dev/block/platform/omap/omap_hsmmc.1/by-name/misc
-/xloader	emmc		/dev/block/platform/omap/omap_hsmmc.1/by-name/xloader
-
-
+/efs		ext4		/dev/block/platform/omap/omap_hsmmc.1/by-name/efs	flags=display="EFS";backup=1
