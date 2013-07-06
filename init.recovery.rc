@@ -31,7 +31,7 @@ on init
     chown root shell /tmp
     chmod 0775 /tmp
 
-    insmod /sbin/atmel_mxt_ts.ko
+    insmod /vendor/firmware/atmel_mxt_ts.ko
 
     write /sys/class/android_usb/android0/enable 0
     write /sys/class/android_usb/android0/idVendor 1949

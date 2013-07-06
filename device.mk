@@ -23,6 +23,7 @@ PRODUCT_COPY_FILES += \
 
 # Recovery TS module/config
 PRODUCT_COPY_FILES += \
+    $(DEVICE_FOLDER)/prebuilt/vendor/firmware/atmel_mxt_ts.ko:recovery/root/vendor/firmware/atmel_mxt_ts.ko \
     $(DEVICE_FOLDER)/prebuilt/vendor/firmware/maxtouch.cfg:recovery/root/vendor/firmware/maxtouch.cfg
 
 # Device settings
