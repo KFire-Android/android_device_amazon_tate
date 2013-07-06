@@ -10,6 +10,9 @@ TARGET_BOARD_OMAP_CPU := 4460
 # Kernel Build
 TARGET_KERNEL_SOURCE := kernel/amazon/bowser-common
 TARGET_KERNEL_CONFIG := tate_android_defconfig
+BOARD_KERNEL_CMDLINE := mem=1G console=/dev/null rootdelay=2 init=/init androidboot.console=ttyO2 androidboot.hardware=bowser vmalloc=384M
+# Uncomment for recovery build w/ stock kernel
+#BOARD_KERNEL_CMDLINE := console=ttyO2,115200n8 rootdelay=2 mem=1G init=/init vmalloc=256M vram=32M omapfb.vram=0:20M androidboot.console=ttyO2 androidboot.hardware=bowser
 
 # External SGX Module
 SGX_MODULES:
@@ -19,12 +22,7 @@ SGX_MODULES:
 	mv $(KERNEL_OUT)/../../target/kbuild/pvrsrvkm_sgx540_120.ko $(KERNEL_MODULES_OUT)
 	$(ARM_EABI_TOOLCHAIN)/arm-eabi-strip --strip-unneeded $(KERNEL_MODULES_OUT)/pvrsrvkm_sgx540_120.ko
 
-# Put the touchscreen driver into rootfs
-TS_MODULE:
-	make -j8 -C $(KERNEL_SRC) O=$(KERNEL_OUT) ARCH=arm KERNEL_CROSS_COMPILE=arm-eabi- CROSS_COMPILE=arm-eabi- KERNELDIR=$(KERNEL_OUT) modules
-	cp $(KERNEL_OUT)/drivers/input/touchscreen/atmel_mxt_ts.ko $(OUT)/root/sbin/
-
-TARGET_KERNEL_MODULES += SGX_MODULES TS_MODULE
+TARGET_KERNEL_MODULES += SGX_MODULES
 
 # OTA Packaging / Bootimg creation
 BOARD_CUSTOM_BOOTIMG_MK := $(DEVICE_FOLDER)/boot.mk
@@ -40,3 +38,4 @@ TARGET_OTA_ASSERT_DEVICE := blaze_tablet,bowser,tate
 DEVICE_RESOLUTION := 800x1280
 TW_BRIGHTNESS_PATH := /sys/class/backlight/lcd-backlight/brightness
 TW_NO_SCREEN_BLANK := true
+TW_NO_SCREEN_TIMEOUT := true
