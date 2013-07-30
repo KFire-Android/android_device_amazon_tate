@@ -3,7 +3,7 @@ import init.bowser.usb.rc
 on init
     loglevel 8
 
-# See storage config details at http://source.android.com/tech/storage/
+    # See storage config details at http://source.android.com/tech/storage/
     mkdir /mnt/shell/emulated 0700 shell shell
     mkdir /storage/emulated 0555 root root
 
@@ -11,119 +11,38 @@ on init
     export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
     export EMULATED_STORAGE_TARGET /storage/emulated
 
-# Support legacy paths
+    # Support legacy paths
     symlink /storage/emulated/legacy /sdcard
     symlink /storage/emulated/legacy /mnt/sdcard
     symlink /storage/emulated/legacy /storage/sdcard0
     symlink /mnt/shell/emulated/0 /storage/emulated/legacy
 
-# create removable USB Mass Storage mountpoints
+    # create removable USB Mass Storage mountpoints
     mkdir /storage/usb0 0000 system system
     mkdir /storage/usb1 0000 system system
 
-
-on post-fs-data
-    # we will remap this as /mnt/sdcard with the sdcard fuse tool
-    mkdir /data/media 0775 media_rw media_rw
-    chown media_rw media_rw /data/media
-
-    mkdir /cache/trace 0777 system system
-    chown system system /cache/trace
-
-# symlink egl.cfg
-    symlink /sys/egl/egl.cfg /system/lib/egl/egl.cfg
-
-# mount system ro
-    mount ext4 /dev/block/platform/omap/omap_hsmmc.1/by-name/system /system ro remount
-
-# camera calibration - DCC folder permission
-    chown media media /data/misc/camera
-    chown media media /data/misc/camera/R12_MVEN001_LD1_ND0_IR0_SH0_FL0_SVEN001_DCCID43
-    chown media media /data/misc/camera/R12_MVEN002_LD2_ND0_IR0_SH0_FL0_SVEN002_DCCID42
-    chown media media /data/misc/camera/R8_MVEN002_LD2_ND0_IR0_SH0_FL1_SVEN003_DCCID1042
-
-    mkdir /data/smc 0770 drmrpc drmrpc
-    chown drmrpc drmrpc /data/smc/counter.bin
-    chown drmrpc drmrpc /data/smc/storage.bin
-    chown drmrpc drmrpc /data/smc/system.bin
-
-    setprop vold.post_fs_data_done 1
-    start sdcard
-
-#for Bluetooth HID
-    chmod 0666 /dev/uhid
-
-on boot
-    mount debugfs /sys/kernel/debug /sys/kernel/debug
-    chmod 0666 /dev/pvrsrvkm
-    setprop ro.crypto.keyfile.userdata /dev/block/platform/omap/omap_hsmmc.1/by-name/crypto
-
-# autosuspend root hubs immediatly after attached devices
-    write /sys/bus/usb/devices/usb1/power/autosuspend_delay_ms 0
-    write /sys/bus/usb/devices/usb2/power/autosuspend_delay_ms 0
-
-# Remove the Ultra Fast Media Card Reader on EHCI bus
-    write /sys/bus/usb/devices/1-1.1/remove 1
-
-# Set Remote wakeup flag for the two Hubs on the Tablet board
-    write /sys/bus/usb/devices/1-1/power/wakeup enabled
-    write /sys/bus/usb/devices/1-1.2/power/wakeup enabled
-
-# wi-fi
-    mkdir /data/misc/wifi 0770 wifi wifi
-    mkdir /data/misc/wifi/sockets 0770 wifi wifi
-    mkdir /data/misc/dhcp 0770 dhcp dhcp
-    chown dhcp dhcp /data/misc/dhcp
-    insmod /system/lib/modules/bcmdhd.ko iface_name=wlan0 firmware_path=/system/vendor/firmware/fw_bcmdhd.bin
-
-# GPS
-    mkdir /data/gps 0771 system system
-    chown /data/gps system system
-# LBS
-    mkdir /data/lbs 0771 system system
-    chown /data/lbs system system
-
 on fs
     mkdir /efs 0775 radio radio
-    mount ext4 /dev/block/platform/omap/omap_hsmmc.1/by-name/system /system wait rw discard
+    mount_all /fstab.bowser
     chmod 0755 /system/vendor/oprofile/oprofile-boot
     setprop ro.crypto.tmpfs_options size=128m,mode=0771,uid=1000,gid=1000
-    mount ext4 /dev/block/platform/omap/omap_hsmmc.1/by-name/userdata /data wait noatime nosuid nodev discard,nomblk_io_submit,commit=20,barrier=0
-    mount ext4 /dev/block/platform/omap/omap_hsmmc.1/by-name/cache /cache wait noatime nosuid nodev discard,nomblk_io_submit,commit=20,barrier=0
-    mount ext4 /dev/block/platform/omap/omap_hsmmc.1/by-name/efs /efs wait nomblk_io_submit,commit=20,barrier=0
     setprop ro.crypto.fuse_sdcard true
     chmod 0666 /dev/block/platform/omap/omap_hsmmc.1/by-name/misc
     symlink    /dev/block/platform/omap/omap_hsmmc.1/by-name/misc /misc
 
-# pvr module
+    # pvr module
     insmod /system/lib/modules/pvrsrvkm_sgx540_120.ko
     insmod /system/lib/modules/omaplfb_sgx540_120.ko
     start pvrsrvinit
 
-on post-fs
-    setprop ro.radio.noril yes
-
-# H264 Encoder Profile setting
-# 1 - Base Profile
-# 2 - Main Profile
-# 8 - High Profile
-    setprop video.h264enc.profile 1
-
-# change permissions for ION driver
+    # change permissions for ION driver
     chmod 0777 /dev/ion
 
-# We chown/chmod /efs because mount is run as root + defaults
+    # We chown/chmod /efs because mount is run as root + defaults
     chown radio radio /efs
     chmod 0775 /efs
 
-# add symlink for HDCP key
-#   symlink  /efs/hdcp/hdcp.kek.wrapped /system/vendor/firmware/hdcp.keys
-
-# change /dev/hdcp owner and permission for FQC test
-    chown system system /dev/hdcp
-    chmod 0666 /dev/hdcp
-
-# change permissions for Sensors
+    # change permissions for Sensors
     chown system system /sys/bus/i2c/drivers/cma3000_accl/4-001c
     chown system system /sys/bus/i2c/drivers/cma3000_accl/4-001c/enable
     chown system system /sys/bus/i2c/drivers/cma3000_accl/4-001c/delay
@@ -143,48 +62,34 @@ on post-fs
     chown system system /sys/bus/i2c/drivers/hmc5843/4-001e/rate
     chown system system /sys/devices/system/proximity/proximity0/enable
 
-#Sensor light
+    #Sensor light
     chown system system /sys/class/i2c-dev/i2c-4/device/4-004a/enable
 
-#Hall Sensor : (For FQC) change owner for bu52061 driver
+    #Hall Sensor : (For FQC) change owner for bu52061 driver
     chown system system /dev/bu52061
 
-# change permissions for Bluetooth/GPS
-    chmod 0660 /sys/class/rfkill/rfkill0/state
-    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
-    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
-    chmod 0600 /dev/ttyO1
-    chown bluetooth bluetooth /dev/ttyO1
-    chmod 0777 /proc/product_name
-    chmod 0666 /dev/rfkill
-
-# change permissions for Backlight
+    # change permissions for Backlight
     chmod 0666 /sys/class/backlight/lcd-backlight/brightness
     chown system graphics /sys/class/backlight/lcd-backlight/brightness
 
-# change permissions for HDMI certification support, to be removed on user build
+    # change permissions for HDMI certification support, to be removed on user build
     chmod 0777 /sys/devices/platform/omapdss/display1/hdmi_timings
     chmod 0777 /sys/devices/platform/omapdss/display1/deepcolor
 
-# Change permissions on the governor (this is for debug only)
+    # Change permissions on the governor (this is for debug only)
     chmod 444 /proc/cmdline
 
-# change the owner of product_name and product_features
-   chown media media /proc/product_name
-   chown media media /proc/product_name_extra
-   chown media media /proc/product_features
-
-# Set default maximum of 1200 on cpu0 (peformance settings will change this if set by user)
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1200000
-
-# Change permissions on sensors HAL        
+    # change the owner of product_name and product_features
+    chown media media /proc/product_name
+    chown media media /proc/product_name_extra
+    chown media media /proc/product_features
 
     chmod 777 /dev/timerirq
     chmod 777 /dev/mpu
     chmod 777 /dev/mpuirq
     chmod 777 /dev/compassirq
 
-# Change permissions on the charger driver
+    # Change permissions on the charger driver
     chown system system /sys/class/power_supply/smb347_usb/device/charge_enable
     chmod 666 /sys/class/power_supply/smb347_usb/device/charge_enable
     chown system system /sys/class/power_supply/smb347_usb/device/charge_current
@@ -193,9 +98,97 @@ on post-fs
     chmod 666 /sys/class/power_supply/smb347_usb/device/charge_input
     chown system system /sys/class/power_supply/smb347_ac/online
 
-# Change permissions on the battery driver
+    # Change permissions on the battery driver
     chown system system /sys/class/power_supply/bq27541/charge_full_design
 
+    # Set default maximum of 1200 on cpu0 (peformance settings will change this if set by user)
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1200000
+
+on post-fs-data
+    # we will remap this as /mnt/sdcard with the sdcard fuse tool
+    mkdir /data/media 0775 media_rw media_rw
+    chown media_rw media_rw /data/media
+
+    mkdir /cache/trace 0777 system system
+    chown system system /cache/trace
+
+    # symlink egl.cfg
+    symlink /sys/egl/egl.cfg /system/lib/egl/egl.cfg
+
+    # mount system ro
+    mount ext4 /dev/block/platform/omap/omap_hsmmc.1/by-name/system /system ro remount
+
+    # camera calibration - DCC folder permission
+    chown media media /data/misc/camera
+    chown media media /data/misc/camera/R12_MVEN001_LD1_ND0_IR0_SH0_FL0_SVEN001_DCCID43
+    chown media media /data/misc/camera/R12_MVEN002_LD2_ND0_IR0_SH0_FL0_SVEN002_DCCID42
+    chown media media /data/misc/camera/R8_MVEN002_LD2_ND0_IR0_SH0_FL1_SVEN003_DCCID1042
+
+    mkdir /data/smc 0770 drmrpc drmrpc
+    chown drmrpc drmrpc /data/smc/counter.bin
+    chown drmrpc drmrpc /data/smc/storage.bin
+    chown drmrpc drmrpc /data/smc/system.bin
+
+    setprop vold.post_fs_data_done 1
+    start sdcard
+
+    #for Bluetooth HID
+    chmod 0666 /dev/uhid
+
+on boot
+    mount debugfs /sys/kernel/debug /sys/kernel/debug
+    chmod 0666 /dev/pvrsrvkm
+    setprop ro.crypto.keyfile.userdata /dev/block/platform/omap/omap_hsmmc.1/by-name/crypto
+
+    # autosuspend root hubs immediatly after attached devices
+    write /sys/bus/usb/devices/usb1/power/autosuspend_delay_ms 0
+    write /sys/bus/usb/devices/usb2/power/autosuspend_delay_ms 0
+
+    # Remove the Ultra Fast Media Card Reader on EHCI bus
+    write /sys/bus/usb/devices/1-1.1/remove 1
+
+    # Set Remote wakeup flag for the two Hubs on the Tablet board
+    write /sys/bus/usb/devices/1-1/power/wakeup enabled
+    write /sys/bus/usb/devices/1-1.2/power/wakeup enabled
+
+    # wi-fi
+    mkdir /data/misc/wifi 0770 wifi wifi
+    mkdir /data/misc/wifi/sockets 0770 wifi wifi
+    mkdir /data/misc/dhcp 0770 dhcp dhcp
+    chown dhcp dhcp /data/misc/dhcp
+    insmod /system/lib/modules/bcmdhd.ko iface_name=wlan0 firmware_path=/system/vendor/firmware/fw_bcmdhd.bin
+
+    # GPS
+    mkdir /data/gps 0771 system system
+    chown /data/gps system system
+    # LBS
+    mkdir /data/lbs 0771 system system
+    chown /data/lbs system system
+
+on post-fs
+    setprop ro.radio.noril yes
+
+    # H264 Encoder Profile setting
+    # 1 - Base Profile
+    # 2 - Main Profile
+    # 8 - High Profile
+    setprop video.h264enc.profile 1
+
+    # add symlink for HDCP key
+    #   symlink  /efs/hdcp/hdcp.kek.wrapped /system/vendor/firmware/hdcp.keys
+
+    # change /dev/hdcp owner and permission for FQC test
+    chown system system /dev/hdcp
+    chmod 0666 /dev/hdcp
+
+    # change permissions for Bluetooth/GPS
+    chmod 0660 /sys/class/rfkill/rfkill0/state
+    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
+    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
+    chmod 0600 /dev/ttyO1
+    chown bluetooth bluetooth /dev/ttyO1
+    chmod 0777 /proc/product_name
+    chmod 0666 /dev/rfkill
 
 service pvrsrvinit /vendor/bin/pvrsrvinit
     class core
