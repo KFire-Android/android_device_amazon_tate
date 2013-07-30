@@ -11,6 +11,7 @@ PRODUCT_AAPT_PREF_CONFIG := tvdpi
 
 # Rootfs
 PRODUCT_COPY_FILES += \
+    $(DEVICE_FOLDER)/fstab.tate:/root/fstab.bowser \
     $(DEVICE_FOLDER)/init.bowser.rc:root/init.bowser.rc \
     $(DEVICE_FOLDER)/init.bowser.usb.rc:root/init.bowser.usb.rc \
     $(DEVICE_FOLDER)/ueventd.bowser.rc:root/ueventd.bowser.rc

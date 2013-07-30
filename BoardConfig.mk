@@ -29,10 +29,11 @@ BOARD_CUSTOM_BOOTIMG_MK := $(DEVICE_FOLDER)/boot.mk
 
 # hack the ota
 TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := ./$(DEVICE_FOLDER)/releasetools/bowser_ota_from_target_files
-# not tested at all
 TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := ./$(DEVICE_FOLDER)/releasetools/bowser_img_from_target_files
 
 # Recovery/TWRP Config
+TARGET_RECOVERY_FSTAB = $(DEVICE_FOLDER)/fstab.tate
+RECOVERY_FSTAB_VERSION = 2
 TARGET_RECOVERY_INITRC := $(DEVICE_FOLDER)/init.recovery.rc
 TARGET_OTA_ASSERT_DEVICE := blaze_tablet,bowser,tate
 DEVICE_RESOLUTION := 800x1280
