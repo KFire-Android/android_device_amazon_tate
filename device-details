@@ -1,8 +1,6 @@
-shell@android:/sys/bus/i2c/drivers $ ls
 MAX44007 --ambient light sensor
 atmel_mxt_ts --touch screen sensor
 bq27541 --battery management drirver
-dummy
 lp855x  --backlight Driver
 mpu6050B1 --memory sensor
 smb347 --battery charger
