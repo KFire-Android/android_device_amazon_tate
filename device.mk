@@ -57,10 +57,19 @@ PRODUCT_PROPERTY_OVERRIDES += \
     omap.audio.power=PingPong \
     dolby.audio.sink.info=speaker \
     sys.usb.vid=1949 \
-    sys.usb.pid=0007
+    sys.usb.pid=0007 \
+    ro.cwm.forbid_format=/bootloader,/xloader,/misc \
+    ro.camera.sound.forced=0
 
 # Set dirty regions off
 PRODUCT_PROPERTY_OVERRIDES += \
     hwui.render_dirty_regions=false
+
+# RIL turn off
+PRODUCT_PROPERTY_OVERRIDES += \
+    keyguard.no_require_sim=1 \
+    ro.radio.use-ppp=no \
+    ro.config.nocheckin=yes \
+    ro.radio.noril=yes
 
 $(call inherit-product-if-exists, vendor/amazon/tate/tate-vendor.mk)
