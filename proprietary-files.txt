@@ -28,15 +28,6 @@ bin/provisioning_client
 bin/start_smc.sh
 bin/atmel_touch.sh
 
-# HALs
-lib/hw/sensors.omap4.so
-
-# Libs
-lib/libinvensense_hal.so
-lib/libmllite.so
-lib/libmlplatform.so
-lib/libmplmpu.so
-
 # Firmware
 vendor/firmware/ducati-m3.bin
 vendor/firmware/fw_bcmdhd.bin
