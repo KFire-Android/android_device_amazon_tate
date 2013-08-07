@@ -852,8 +852,7 @@ def main(argv):
     OPTIONS.device_specific = os.path.normpath(OPTIONS.device_specific)
     print "using device-specific extensions in", OPTIONS.device_specific
 
-  temp_zip_file = tempfile.NamedTemporaryFile()
-  output_zip = zipfile.ZipFile(temp_zip_file, "w",
+  output_zip = zipfile.ZipFile(args[1], "w",
                                compression=zipfile.ZIP_DEFLATED)
 
   if OPTIONS.incremental_source is None:
@@ -877,10 +876,6 @@ def main(argv):
     WriteIncrementalOTAPackage(input_zip, source_zip, output_zip)
 
   output_zip.close()
-
-  SignOutput(temp_zip_file.name, args[1])
-  temp_zip_file.close()
-
   common.Cleanup()
 
   print "done."
