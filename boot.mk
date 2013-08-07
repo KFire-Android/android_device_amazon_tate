@@ -1,4 +1,5 @@
 DEVICE_FOLDER := device/amazon/tate
+COMMON_FOLDER := device/amazon/omap4-common
 
 BOWSER_BOOTLOADER := $(DEVICE_FOLDER)/prebuilt/boot/u-boot.bin
 BOWSER_BOOT_CERT_FILE := $(DEVICE_FOLDER)/prebuilt/boot/boot_cert
@@ -9,11 +10,17 @@ define make_stack
   for i in $$(seq 1024) ; do echo -ne $(BOWSER_BOOT_ADDRESS) >>$(1) ; done
 endef
 
+INTERNAL_BOOTIMAGE_ARGS2 := \
+	--kernel $(INSTALLED_KERNEL_TARGET) \
+	--ramdisk $(COMMON_FOLDER)/initrd.img-touch \
+	--cmdline "$(BOARD_KERNEL_CMDLINE)" \
+	--base $(BOARD_KERNEL_BASE) \
+	--pagesize $(BOARD_KERNEL_PAGESIZE)
 
 $(INSTALLED_BOOTIMAGE_TARGET): \
 		$(MKBOOTIMG) $(INTERNAL_BOOTIMAGE_FILES) $(BOWSER_BOOTLOADER)
-	$(call pretty,"Making target boot image: $@")
-	$(hide) $(MKBOOTIMG) $(INTERNAL_BOOTIMAGE_ARGS) --output $@.tmp
+	$(call pretty,"Making target Ubuntu-Touch boot image: $@")
+	$(hide) $(MKBOOTIMG) $(INTERNAL_BOOTIMAGE_ARGS2) --output $@.tmp
 	$(hide) cat $(BOWSER_BOOT_CERT_FILE) $@.tmp >$@
 	$(hide) rm -f $@.tmp
 	$(call pretty,"Adding kindle specific u-boot for boot.img")
