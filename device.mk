@@ -14,6 +14,10 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/init.bowser.usb.rc:root/init.bowser.usb.rc \
     $(DEVICE_FOLDER)/ueventd.bowser.rc:root/ueventd.bowser.rc
 
+# ubuntu-session.d
+PRODUCT_COPY_FILES += \
+    $(DEVICE_FOLDER)/ubuntu-session.d.conf:/system/etc/ubuntu-session.d/tate.conf
+
 # Prebuilt /system/usr
 PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/prebuilt/usr/idc/cyttsp4-i2c.idc:system/usr/idc/cyttsp4-i2c.idc \
