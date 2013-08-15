@@ -25,7 +25,6 @@ on fs
     mkdir /efs 0775 radio radio
     mount_all /fstab.bowser
     chmod 0755 /system/vendor/oprofile/oprofile-boot
-    setprop ro.crypto.tmpfs_options size=128m,mode=0771,uid=1000,gid=1000
     setprop ro.crypto.fuse_sdcard true
     chmod 0666 /dev/block/platform/omap/omap_hsmmc.1/by-name/misc
     symlink    /dev/block/platform/omap/omap_hsmmc.1/by-name/misc /misc
@@ -41,26 +40,6 @@ on fs
     # We chown/chmod /efs because mount is run as root + defaults
     chown radio radio /efs
     chmod 0775 /efs
-
-    # change permissions for Sensors
-    chown system system /sys/bus/i2c/drivers/cma3000_accl/4-001c
-    chown system system /sys/bus/i2c/drivers/cma3000_accl/4-001c/enable
-    chown system system /sys/bus/i2c/drivers/cma3000_accl/4-001c/delay
-    chown system system /sys/bus/i2c/drivers/tsl2771/4-0039
-    chown system system /sys/bus/i2c/drivers/tsl2771/4-0039/als_enable
-    chown system system /sys/bus/i2c/drivers/tsl2771/4-0039/prox_enable
-    chown system system /sys/bus/i2c/drivers/bma180_accel/4-0040
-    chown system system /sys/bus/i2c/drivers/bma180_accel/4-0040/enable
-    chown system system /sys/bus/i2c/drivers/bma180_accel/4-0040/delay
-    chown system system /sys/bus/i2c/drivers/mpu3050_gyro/4-0068
-    chown system system /sys/bus/i2c/drivers/mpu3050_gyro/4-0068/enable
-    chown system system /sys/bus/i2c/drivers/mpu3050_gyro/4-0068/delay
-    chown system system /sys/bus/i2c/drivers/bmp085/4-0077
-    chown system system /sys/bus/i2c/drivers/bmp085/4-0077/enable
-    chown system system /sys/bus/i2c/drivers/hmc5843/4-001e
-    chown system system /sys/bus/i2c/drivers/hmc5843/4-001e/enable
-    chown system system /sys/bus/i2c/drivers/hmc5843/4-001e/rate
-    chown system system /sys/devices/system/proximity/proximity0/enable
 
     #Sensor light
     chown system system /sys/class/i2c-dev/i2c-4/device/4-004a/enable
@@ -143,9 +122,7 @@ on post-fs-data
 
     # camera calibration - DCC folder permission
     chown media media /data/misc/camera
-    chown media media /data/misc/camera/R12_MVEN001_LD1_ND0_IR0_SH0_FL0_SVEN001_DCCID43
-    chown media media /data/misc/camera/R12_MVEN002_LD2_ND0_IR0_SH0_FL0_SVEN002_DCCID42
-    chown media media /data/misc/camera/R8_MVEN002_LD2_ND0_IR0_SH0_FL1_SVEN003_DCCID1042
+    chown media media /data/misc/camera/R01_MVEN002_LD0_ND0_IR0_SH0_FL0_SVEN002_DCCID46
 
     mkdir /data/smc 0770 drmrpc drmrpc
     chown drmrpc drmrpc /data/smc/counter.bin
