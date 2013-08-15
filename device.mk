@@ -72,4 +72,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.config.nocheckin=yes \
     ro.radio.noril=yes
 
+# wifi-only device
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.carrier=wifi-only
+
 $(call inherit-product-if-exists, vendor/amazon/tate/tate-vendor.mk)
