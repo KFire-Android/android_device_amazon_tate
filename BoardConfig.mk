@@ -25,8 +25,6 @@ TARGET_BOARD_OMAP_CPU := 4460
 TARGET_KERNEL_SOURCE := kernel/amazon/bowser-common
 TARGET_KERNEL_CONFIG := tate_android_defconfig
 BOARD_KERNEL_CMDLINE := mem=1G console=/dev/null rootdelay=2 init=/init vmalloc=256M androidboot.console=ttyO2 androidboot.hardware=bowser
-# Uncomment for recovery build w/ stock kernel
-#BOARD_KERNEL_CMDLINE := console=ttyO2,115200n8 rootdelay=2 mem=1G init=/init vmalloc=256M vram=32M omapfb.vram=0:20M androidboot.console=ttyO2 androidboot.hardware=bowser
 
 # External SGX Module
 SGX_MODULES:
@@ -36,7 +34,11 @@ SGX_MODULES:
 	mv $(KERNEL_OUT)/../../target/kbuild/pvrsrvkm_sgx540_120.ko $(KERNEL_MODULES_OUT)
 	$(ARM_EABI_TOOLCHAIN)/arm-eabi-strip --strip-unneeded $(KERNEL_MODULES_OUT)/pvrsrvkm_sgx540_120.ko
 
-TARGET_KERNEL_MODULES += SGX_MODULES
+TOUCH_MODULES:
+	mkdir -p $(OUT)/recovery/root/vendor/firmware/
+	cp $(KERNEL_MODULES_OUT)/atmel_mxt_ts.ko $(OUT)/recovery/root/vendor/firmware/
+
+TARGET_KERNEL_MODULES += SGX_MODULES TOUCH_MODULES
 
 # OTA Packaging / Bootimg creation
 BOARD_CUSTOM_BOOTIMG_MK := $(DEVICE_FOLDER)/boot.mk
