@@ -18,8 +18,8 @@ on init
     symlink /mnt/shell/emulated/0 /storage/emulated/legacy
 
     # create removable USB Mass Storage mountpoints
-    mkdir /storage/usb0 0000 system system
-    mkdir /storage/usb1 0000 system system
+    mkdir /storage/usb0 0555 root root
+    mkdir /storage/usb1 0555 root root
 
 on fs
     mkdir /efs 0775 radio radio
@@ -200,13 +200,6 @@ service bugreport /system/bin/bugmailer.sh -v
     oneshot
     keycodes 114 115 102
 
-# create virtual SD card at /mnt/sdcard, based on the /data/media directory
-# daemon will drop to user/group system/media_rw after initializing
-# underlying files in /data/media will be created with user and group media_rw (1023)
-service sdcard /system/bin/sdcard /data/media /mnt/shell/emulated 1023 1023
-    class main
-    disabled
-
 service EmmcInit /system/bin/emmc_init.sh
     class core
     user root
@@ -284,3 +277,5 @@ service navl_server /system/bin/navd --android_log NAVD  -p3 -nav\"-c/system/etc
 on property:init.svc.smc_pa=stopped
 	start tf_daemon
 
+service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emulated
+    class late_start
