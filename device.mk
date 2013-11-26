@@ -85,3 +85,4 @@ PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.heapmaxfree=8m
 
 $(call inherit-product-if-exists, vendor/amazon/tate/tate-vendor.mk)
+$(call inherit-product-if-exists, vendor/amazon/omap4-common/omap4-common-vendor-540_120.mk)
