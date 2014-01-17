@@ -30,6 +30,6 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 
 PRODUCT_NAME := full_tate
 PRODUCT_DEVICE := tate
-PRODUCT_BRAND := amazon
+PRODUCT_BRAND := google
 PRODUCT_MODEL := Kindle Fire HD 7
-PRODUCT_MANUFACTURER := amazon
+PRODUCT_MANUFACTURER := android
