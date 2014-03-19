@@ -165,4 +165,10 @@
     <!--  Maximum number of supported users -->
     <integer name="config_multiuserMaximumUsers">8</integer>
 
+    <!-- Enable lockscreen translucent decor -->
+    <bool name="config_enableLockScreenTranslucentDecor">true</bool>
+
+    <!-- Make things go fast -->
+    <bool name="config_ui_enableFadingMarquee">false</bool>
+
 </resources>
