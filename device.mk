@@ -59,7 +59,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     sys.usb.vid=1949 \
     sys.usb.pid=0007 \
     ro.cwm.forbid_format=/bootloader,/xloader,/misc \
-    ro.camera.sound.forced=0
+    ro.camera.sound.forced=0 \
+    ro.camera.video_size=1280x720
 
 # Set dirty regions off
 PRODUCT_PROPERTY_OVERRIDES += \
