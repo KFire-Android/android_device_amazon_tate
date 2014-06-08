@@ -30,13 +30,6 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/init.bowser.usb.rc:root/init.bowser.usb.rc \
     $(DEVICE_FOLDER)/ueventd.bowser.rc:root/ueventd.bowser.rc
 
-# Prebuilt /system/usr
-PRODUCT_COPY_FILES += \
-    $(DEVICE_FOLDER)/prebuilt/usr/idc/cyttsp4-i2c.idc:system/usr/idc/cyttsp4-i2c.idc \
-    $(DEVICE_FOLDER)/prebuilt/usr/idc/AtmelTouch.idc:system/usr/idc/AtmelTouch.idc \
-    $(DEVICE_FOLDER)/prebuilt/usr/keylayout/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl\
-    $(DEVICE_FOLDER)/prebuilt/usr/keylayout/twl6030_pwrbutton.kl:system/usr/keylayout/twl6030_pwrbutton.kl
-
 # Recovery Trigger / TS module/config
 PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/prebuilt/vendor/firmware/maxtouch.cfg:recovery/root/vendor/firmware/maxtouch.cfg \
