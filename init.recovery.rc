@@ -5,14 +5,22 @@ on early-init
     start healthd
 
 on init
-    export PATH /sbin
+    export PATH /sbin:/system/bin
     export LD_LIBRARY_PATH .:/sbin
     export ANDROID_ROOT /system
     export ANDROID_DATA /data
     export EXTERNAL_STORAGE /sdcard
 
+    symlink /system/etc /etc
+
     mkdir /boot
     mkdir /recovery
+    mkdir /sdcard
+    mkdir /internal_sd
+    mkdir /external_sd
+    mkdir /sd-ext
+    mkdir /datadata
+    mkdir /emmc
     mkdir /system
     mkdir /data
     mkdir /cache
@@ -51,7 +59,6 @@ on init
     write /sys/class/android_usb/android0/iProduct "Kindle"
     write /sys/class/android_usb/android0/iSerial ${ro.serialno}
 
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
 
 on boot
 
@@ -63,6 +70,16 @@ on boot
 
 on property:sys.powerctl=*
    powerctl ${sys.powerctl}
+
+on property:sys.storage.ums_enabled=1
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/functions adb,mass_storage
+    write /sys/class/android_usb/android0/enable 1
+
+on property:sys.storage.ums_enabled=0
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/functions adb
+    write /sys/class/android_usb/android0/enable ${service.adb.root}
 
 service ueventd /sbin/ueventd
     critical
