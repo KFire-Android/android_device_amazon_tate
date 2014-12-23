@@ -1,0 +1,13 @@
+on early-init
+    setenforce permissive
+    loglevel 7
+
+on init
+    insmod /vendor/firmware/atmel_mxt_ts.ko
+
+on boot
+    write /sys/class/android_usb/android0/idVendor 1949
+    write /sys/class/android_usb/android0/idProduct 0007
+    write /sys/class/android_usb/android0/iManufacturer Amazon
+    write /sys/class/android_usb/android0/iProduct "Kindle"
+    write /sys/class/android_usb/android0/iSerial ${ro.serialno}

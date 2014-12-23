@@ -46,7 +46,6 @@ BOARD_CUSTOM_BOOTIMG_MK := $(DEVICE_FOLDER)/boot.mk
 # Recovery/TWRP Config
 TARGET_RECOVERY_FSTAB = $(DEVICE_FOLDER)/fstab.tate
 RECOVERY_FSTAB_VERSION = 2
-TARGET_RECOVERY_INITRC := $(DEVICE_FOLDER)/init.recovery.rc
 TARGET_OTA_ASSERT_DEVICE := blaze_tablet,bowser,tate
 DEVICE_RESOLUTION := 800x1280
 TW_BRIGHTNESS_PATH := /sys/class/backlight/lcd-backlight/brightness

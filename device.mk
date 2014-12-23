@@ -28,12 +28,8 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/fstab.tate:/root/fstab.bowser \
     $(DEVICE_FOLDER)/init.bowser.rc:root/init.bowser.rc \
     $(DEVICE_FOLDER)/init.bowser.usb.rc:root/init.bowser.usb.rc \
+    $(DEVICE_FOLDER)/init.recovery.bowser.rc:root/init.recovery.bowser.rc \
     $(DEVICE_FOLDER)/ueventd.bowser.rc:root/ueventd.bowser.rc
-
-# Recovery Trigger / TS module/config
-PRODUCT_COPY_FILES += \
-    $(DEVICE_FOLDER)/prebuilt/vendor/firmware/maxtouch.cfg:recovery/root/vendor/firmware/maxtouch.cfg \
-    $(DEVICE_FOLDER)/postrecoveryboot.sh:recovery/root/sbin/postrecoveryboot.sh
 
 # Device settings
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -51,6 +47,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
     dolby.audio.sink.info=speaker \
     sys.usb.vid=1949 \
     sys.usb.pid=0007 \
+    usb.vendor=1949 \
+    usb.product.adb=0007 \
+    usb.product.mtpadb=0007 \
     ro.cwm.forbid_format=/bootloader,/xloader,/misc \
     ro.camera.sound.forced=0 \
     ro.camera.video_size=1280x720

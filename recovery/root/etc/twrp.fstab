@@ -1,0 +1,8 @@
+# mount point  fstype  device                                                  flags
+/data          f2fs    /dev/block/platform/omap/omap_hsmmc.1/by-name/userdata  flags=length=-16384;fsflags="inline_xattr"
+/cache         ext4    /dev/block/platform/omap/omap_hsmmc.1/by-name/cache
+/system        ext4    /dev/block/platform/omap/omap_hsmmc.1/by-name/system    flags=usermrf
+/boot          emmc    /dev/block/platform/omap/omap_hsmmc.1/by-name/boot
+/recovery      emmc    /dev/block/platform/omap/omap_hsmmc.1/by-name/recovery
+/bootloader    emmc    /dev/block/platform/omap/omap_hsmmc.1/by-name/bootloader
+/efs           ext4    /dev/block/platform/omap/omap_hsmmc.1/by-name/efs       flags=display="EFS";backup=1
