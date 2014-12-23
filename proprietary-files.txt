@@ -23,6 +23,7 @@
 #
 
 # Bins
+bin/brcm_patchram_plus
 bin/provision_device
 bin/provisioning_client
 bin/start_smc.sh
