@@ -25,7 +25,7 @@ TARGET_BOARD_OMAP_CPU := 4460
 TARGET_KERNEL_SOURCE := kernel/amazon/bowser-common
 TARGET_KERNEL_CONFIG := android_omap4_defconfig
 TARGET_KERNEL_VARIANT_CONFIG := android_tate_defconfig
-BOARD_KERNEL_CMDLINE := mem=1G androidboot.hardware=bowser
+BOARD_KERNEL_CMDLINE := mem=1G androidboot.hardware=bowser console=ttyO2,115200n8 androidboot.console=ttyO2
 
 # External SGX Module
 SGX_MODULES:
