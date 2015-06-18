@@ -21,4 +21,4 @@ done
 
 # Call up to bowser-common
 cd ../bowser-common
-../bowser-common/extract-files.sh
+./extract-files.sh
